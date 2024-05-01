@@ -1,6 +1,8 @@
 <div class="textarea-input cva-input">
   <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
-    <mat-label *ngIf="label" [class.disabled]="isDisabled">{{label}}</mat-label>
+    @if (label) {
+      <mat-label [class.disabled]="isDisabled">{{ label }}</mat-label>
+    }
     <textarea
       [id]="id"
       #inputElement
@@ -18,17 +20,26 @@
       [name]="name">
     </textarea>
     <span class="counter">{{control?.value?.length || 0}} / {{ maxLength }}</span>
-    <mat-icon *ngIf="prefixIcon" matPrefix color="accent">
-      {{prefixIcon}}
-    </mat-icon>
-    <mat-icon *ngIf="suffixIcon" matSuffix color="accent">
-      {{suffixIcon}}
-    </mat-icon>
-    <span *ngIf="suffix" matSuffix>{{suffix}}</span>
-    <mat-error *ngIf="control.errors?.['server']; else clientErrors">{{ control.errors?.['server'] }}</mat-error>
-    <mat-error *ngIf="control.errors?.['required']">{{ validationTranslations.required }}</mat-error>
-    <ng-template #clientErrors>
-      <mat-error *ngFor="let error of validatorMessagesArray">{{ error.value }}</mat-error>
-    </ng-template>
+    @if (prefixIcon) {
+      <mat-icon matPrefix color="accent">
+        {{prefixIcon}}
+      </mat-icon>
+    }
+    @if (suffixIcon) {
+      <mat-icon matSuffix color="accent">
+        {{suffixIcon}}
+      </mat-icon>
+    }
+    @if (suffix) {
+      <span matSuffix>{{suffix}}</span>
+    }
+    @if (control.errors?.['server']) {
+      <mat-error>{{ control.errors?.['server'] }}</mat-error>
+    } @else if (control.errors?.['required']) {
+      <mat-error>{{ validationTranslations.required }}</mat-error>
+      @for (error of validatorMessagesArray; track error) {
+        <mat-error>{{ error.value }}</mat-error>
+      }
+    }
   </mat-form-field>
 </div>

@@ -1,4 +1,3 @@
-import { NgForOf, NgIf } from '@angular/common';
 import { Component, forwardRef, Input, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,8 +16,6 @@ import {BaseTextInput} from "../core/base-text-input";
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    NgForOf,
-    NgIf,
     ReactiveFormsModule,
   ],
   providers: [

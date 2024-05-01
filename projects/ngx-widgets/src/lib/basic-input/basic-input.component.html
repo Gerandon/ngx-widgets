@@ -1,6 +1,8 @@
 <div class="basic-input cva-input">
   <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [hintLabel]="hintLabel" [floatLabel]="floatLabel">
-    <mat-label *ngIf="label" [class.disabled]="isDisabled">{{label}}</mat-label>
+    @if (label) {
+      <mat-label [class.disabled]="isDisabled">{{label}}</mat-label>
+    }
     <input
       [id]="id"
       #inputElement
@@ -15,21 +17,28 @@
       [maxLength]="maxLength"
       [name]="name"
       [required]="!!control.errors?.['required']"/>
-    <mat-icon *ngIf="prefixIcon" matPrefix color="accent">
-      {{prefixIcon}}
-    </mat-icon>
-    <mat-icon *ngIf="suffixIcon" matSuffix color="accent">
-      {{suffixIcon}}
-    </mat-icon>
-    <span *ngIf="suffix" matSuffix class="me-3">{{suffix}}</span>
-    <mat-error *ngIf="control.errors?.['server']; else clientErrors">{{ control.errors?.['server'] }}</mat-error>
-    <ng-template #clientErrors>
-      <mat-error *ngIf="control.errors?.['required']; else otherErrors">{{ validationTranslations.required }}</mat-error>
-      <ng-template #otherErrors>
-        <ng-container *ngFor="let error of validatorMessagesArray; let first = first">
-          <mat-error *ngIf="control.errors?.[error.key]">{{ error.value }}</mat-error>
-        </ng-container>
-      </ng-template>
-    </ng-template>
+    @if (prefixIcon) {
+      <mat-icon matPrefix color="accent">
+        {{prefixIcon}}
+      </mat-icon>
+    }
+    @if (suffixIcon) {
+      <mat-icon matSuffix color="accent">
+        {{suffixIcon}}
+      </mat-icon>
+    }
+    @if (suffix) {
+      <span matSuffix style="margin-right: 10px">{{suffix}}</span>
+    }
+    @if (control.errors?.['server']) {
+      <mat-error>{{ control.errors?.['server'] }}</mat-error>
+    } @else if (control.errors?.['required']) {
+      <mat-error>{{ validationTranslations.required }}</mat-error>
+      @for (error of validatorMessagesArray; track error) {
+        @if (control.errors?.[error.key]) {
+          <mat-error>{{ error.value }}</mat-error>
+        }
+      }
+    }
   </mat-form-field>
 </div>

@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, forwardRef, Input, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -20,10 +20,8 @@ import {BaseInput} from "../core/base-input";
   imports: [
     MatInputModule,
     MatChipsModule,
-    NgForOf,
     MatIconModule,
     ReactiveFormsModule,
-    NgIf,
     MatAutocompleteModule,
     AsyncPipe,
     JsonPipe,

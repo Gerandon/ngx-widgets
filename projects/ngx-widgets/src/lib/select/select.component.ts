@@ -1,4 +1,3 @@
-import { NgForOf, NgIf } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -14,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import {BaseInput, NGX_WIDGETS_VALIDATION_TRANSLATIONS} from '../core/base-input';
+import {BaseInput} from '../core/base-input';
 import { isEqual } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -34,12 +33,10 @@ export interface SelectOptionType {
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true }
   ],
   imports: [
-    NgIf,
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
     MatTooltipModule,
-    NgForOf,
   ],
 })
 export class SelectComponent extends BaseInput<unknown> implements OnInit {

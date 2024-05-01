@@ -1,4 +1,3 @@
-import { NgForOf, NgIf } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -25,8 +24,6 @@ import { BaseTextInput } from '../core/base-text-input';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
-    NgForOf,
   ],
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicInputComponent), multi: true },
