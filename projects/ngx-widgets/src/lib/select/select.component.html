@@ -1,0 +1,25 @@
+<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+  <mat-label *ngIf="label">{{ label }}</mat-label>
+  <mat-select #inputElement
+              #input="ngForm"
+              [multiple]="multiple"
+              [placeholder]="!floatLabel ? label : placeholder"
+              [formControl]="control"
+              [id]="id"
+              [class.input-disabled]="isDisabled || control.disabled"
+              [compareWith]="_isEqual"
+              [attr.disabled]="isDisabled || control.disabled ? '' : null">
+    <mat-option *ngIf="emptyOptionLabel" (click)="control.reset()">
+      {{ emptyOptionLabel }}
+    </mat-option>
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+  <span *ngIf="suffix" matSuffix>{{suffix}}</span>
+  <mat-error *ngIf="control.errors?.['server']; else clientErrors">{{ control.errors?.['server'] }}</mat-error>
+  <mat-error *ngIf="control.errors?.['required']">{{ validationTranslations.required  }}</mat-error>
+  <ng-template #clientErrors>
+    <mat-error *ngFor="let error of validatorMessagesArray">{{ error.value }}</mat-error>
+  </ng-template>
+</mat-form-field>

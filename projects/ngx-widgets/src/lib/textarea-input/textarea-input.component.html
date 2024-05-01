@@ -1,0 +1,34 @@
+<div class="textarea-input cva-input">
+  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+    <mat-label *ngIf="label" [class.disabled]="isDisabled">{{label}}</mat-label>
+    <textarea
+      [id]="id"
+      #inputElement
+      #input="ngForm"
+      #autosize="cdkTextareaAutosize"
+      matInput
+      cdkTextareaAutosize
+      [cdkAutosizeMinRows]="rows"
+      class="w-100 cva-control"
+      [attr.disabled]="isDisabled || control.disabled ? '' : null"
+      [readonly]="isDisabled"
+      [placeholder]="placeholder"
+      [formControl]="control"
+      [maxLength]="maxLength"
+      [name]="name">
+    </textarea>
+    <span class="counter">{{control?.value?.length || 0}} / {{ maxLength }}</span>
+    <mat-icon *ngIf="prefixIcon" matPrefix color="accent">
+      {{prefixIcon}}
+    </mat-icon>
+    <mat-icon *ngIf="suffixIcon" matSuffix color="accent">
+      {{suffixIcon}}
+    </mat-icon>
+    <span *ngIf="suffix" matSuffix>{{suffix}}</span>
+    <mat-error *ngIf="control.errors?.['server']; else clientErrors">{{ control.errors?.['server'] }}</mat-error>
+    <mat-error *ngIf="control.errors?.['required']">{{ validationTranslations.required }}</mat-error>
+    <ng-template #clientErrors>
+      <mat-error *ngFor="let error of validatorMessagesArray">{{ error.value }}</mat-error>
+    </ng-template>
+  </mat-form-field>
+</div>

@@ -63,6 +63,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "projects/demo/src/styles.scss"
             ],
             "scripts": []
@@ -123,6 +124,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "projects/demo/src/styles.scss"
             ],
             "scripts": []

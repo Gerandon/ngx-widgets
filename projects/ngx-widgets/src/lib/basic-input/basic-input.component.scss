@@ -1,0 +1,26 @@
+gerandon-basic-input {
+  display: block;
+  .basic-input {
+    height: inherit;
+    .disabled {
+      color: #CED4DAFF;
+    }
+    mat-form-field {
+      width: 100%;
+      .mat-icon {
+        padding: unset;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      input {
+        &::placeholder {
+          color: #ADB5BDFF;
+          font-style: italic;
+        }
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+  <mat-label *ngIf="label" [class.disabled]="isDisabled">{{ label }}</mat-label>
+  <!-- formControl should always be first child of mat-form-field, or at least under mat-label -->
+  <input #input="ngForm" [style.display]="'none'" [formControl]="control" matInput/>
+  <mat-chip-grid #chipGrid class="w-100">
+    <mat-chip-row *ngFor="let item of control.value" (removed)="remove(item)" color="warn">
+      {{ labelProperty ? item[labelProperty] : item}}
+      <button matChipRemove [attr.aria-label]="(labelProperty ? item[labelProperty] : item) + ' eltávolítása'">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+    <input #inputElement
+           matInput
+           [placeholder]="placeholder || label"
+           [matAutocomplete]="auto"
+           [matChipInputFor]="chipGrid"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           (matChipInputTokenEnd)="!labelProperty && add($event)"/>
+    <mat-autocomplete #auto="matAutocomplete"
+                      (optionSelected)="selected($event)">
+      <mat-option *ngFor="let filterItem of asyncOptions | async"
+                  [value]="filterItem">
+        {{labelProperty ? filterItem[labelProperty] : filterItem}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-chip-grid>
+  <mat-error *ngIf="control.errors?.['server']; else clientErrors">{{ control.errors?.['server'] }}</mat-error>
+  <mat-error *ngIf="control.errors?.['required']">{{ validationTranslations.required }}</mat-error>
+  <ng-template #clientErrors>
+    <mat-error *ngFor="let error of validatorMessagesArray">{{ error.value }}</mat-error>
+  </ng-template>
+</mat-form-field>

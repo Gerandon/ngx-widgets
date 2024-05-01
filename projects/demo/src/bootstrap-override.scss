@@ -1,0 +1,38 @@
+$grid-columns: 12;
+$grid-gutter-width: 1rem;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+);
+// #region Needed for Grid system
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/containers';
+// #endregion
+// #region Utility classes, etc.
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/utilities/api';
+// #endregion
+// #region
+//@import 'bootstrap/scss/nav';
+//@import 'bootstrap/scss/navbar';
+//@import 'bootstrap/scss/dropdown';
+// #endregion
+
+// Needed from 'bootstrap/scss/reboot'; to make container rows work
+//*,
+//*::before,
+//*::after {
+//  box-sizing: border-box !important;
+//}
+// Implementation for MDC ->
+.container-fluid *:not([class^="mdc-"]), .container-fluid,
+.container *:not([class^="mdc-"]), .container {
+  box-sizing: border-box;
+}

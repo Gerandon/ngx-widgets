@@ -1,0 +1,27 @@
+gerandon-textarea-input {
+  display: block;
+  .counter {
+    right: 20px;
+    bottom: 0;
+    position: absolute;
+    font-size: 10px;
+  }
+  .textarea-input {
+    .disabled {
+      color: #CED4DAFF;
+    }
+    mat-form-field {
+      width: 100%;
+      textarea {
+        padding-top: 10px;
+        &::placeholder {
+          color: #ADB5BDFF;
+          font-style: italic;
+        }
+        &:disabled {
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
