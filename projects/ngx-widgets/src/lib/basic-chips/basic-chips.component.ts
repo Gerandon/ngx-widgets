@@ -5,7 +5,6 @@ import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 
 import { Observable } from 'rxjs';
 import {BaseInput} from "../core/base-input";
@@ -18,7 +17,6 @@ import {BaseInput} from "../core/base-input";
   encapsulation: ViewEncapsulation.None,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicChipsComponent), multi: true }],
   imports: [
-    MatInputModule,
     MatChipsModule,
     MatIconModule,
     ReactiveFormsModule,

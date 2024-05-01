@@ -2,11 +2,9 @@
   @if (label) {
     <mat-label [class.disabled]="isDisabled">{{ label }}</mat-label>
   }
-  <!-- formControl should always be first child of mat-form-field, or at least under mat-label -->
-  <input #input="ngForm" [style.display]="'none'" [formControl]="control" matInput/>
   <mat-chip-grid #chipGrid class="w-100">
     @for(item of control.value; track item) {
-      <mat-chip-row (removed)="remove(item)" color="warn">
+      <mat-chip-row (removed)="remove(item)" color="primary" highlighted>
         {{ labelProperty ? item[labelProperty] : item}}
         <button matChipRemove [attr.aria-label]="(labelProperty ? item[labelProperty] : item) + ' eltávolítása'">
           <mat-icon>cancel</mat-icon>
@@ -29,6 +27,7 @@
       }
     </mat-autocomplete>
   </mat-chip-grid>
+  <input #input="ngForm" [style.display]="'none'" [formControl]="control" />
   @if (control.errors?.['server']) {
     <mat-error>{{ control.errors?.['server'] }}</mat-error>
   } @else if (control.errors?.['required']) {
