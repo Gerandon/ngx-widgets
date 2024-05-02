@@ -30,14 +30,17 @@
   "peerDependencies": {
     "@angular/common": "^17.3.0",
     "@angular/core": "^17.3.0",
-    "@angular/material": "^17.3.6"
+    "@angular/material": "^17.3.6",
+    "lodash-es": "^4.17.21"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "sideEffects": false
 }
