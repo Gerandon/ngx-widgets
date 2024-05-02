@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { Observable } from 'rxjs';
 import {BaseInput} from "../core/base-input";
+import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
 
 @Component({
   selector: 'gerandon-basic-chips',
@@ -23,6 +25,10 @@ import {BaseInput} from "../core/base-input";
     MatAutocompleteModule,
     AsyncPipe,
     JsonPipe,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
   ],
 })
 export class BasicChipsComponent<T> extends BaseInput<T[]> {

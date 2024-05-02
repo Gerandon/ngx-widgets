@@ -43,4 +43,8 @@ export class AppComponent {
     basicChips: null,
     autocompleteChips: null,
   });
+
+  constructor() {
+    this.formGroup.valueChanges.subscribe(console.log);
+  }
 }
