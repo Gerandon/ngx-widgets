@@ -19,7 +19,7 @@
       [maxLength]="maxLength"
       [name]="name">
     </textarea>
-    <span class="counter">{{control?.value?.length || 0}} / {{ maxLength }}</span>
+    <span class="counter">{{control.value?.length || 0}} / {{ maxLength }}</span>
     @if (prefixIcon) {
       <mat-icon matPrefix color="accent">
         {{prefixIcon}}
@@ -36,9 +36,12 @@
     @if (control.errors?.['server']) {
       <mat-error>{{ control.errors?.['server'] }}</mat-error>
     } @else if (control.errors?.['required']) {
-      <mat-error>{{ validationTranslations.required }}</mat-error>
-      @for (error of validatorMessagesArray; track error) {
-        <mat-error>{{ error.value }}</mat-error>
+      @if (validationTranslations.required) {
+        <mat-error>{{ validationTranslations.required }}</mat-error>
+      } @else {
+        @for (error of validatorMessagesArray; track error) {
+          <mat-error>{{ error.value }}</mat-error>
+        }
       }
     }
   </mat-form-field>
