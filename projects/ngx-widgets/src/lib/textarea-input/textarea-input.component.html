@@ -35,13 +35,11 @@
     }
     @if (control.errors?.['server']) {
       <mat-error>{{ control.errors?.['server'] }}</mat-error>
-    } @else if (control.errors?.['required']) {
-      @if (validationTranslations.required) {
-        <mat-error>{{ validationTranslations.required }}</mat-error>
-      } @else {
-        @for (error of validatorMessagesArray; track error) {
-          <mat-error>{{ error.value }}</mat-error>
-        }
+    } @else if (control.errors?.['required'] && validationTranslations.required) {
+      <mat-error>{{ validationTranslations.required }}</mat-error>
+    } @else {
+      @for (error of validatorMessagesArray; track error) {
+        <mat-error>{{ error.value }}</mat-error>
       }
     }
   </mat-form-field>
