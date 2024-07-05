@@ -5,21 +5,22 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:lib": "ng build ngx-widgets",
     "watch:lib": "ng build ngx-widgets --watch --configuration development",
     "test": "ng test"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.2.0",
-    "@angular/cdk": "^17.3.6",
-    "@angular/common": "^17.2.0",
-    "@angular/compiler": "^17.2.0",
-    "@angular/core": "^17.2.0",
-    "@angular/forms": "^17.2.0",
-    "@angular/material": "^17.3.6",
-    "@angular/platform-browser": "^17.2.0",
-    "@angular/platform-browser-dynamic": "^17.2.0",
-    "@angular/router": "^17.2.0",
+    "@angular/animations": "^18.0.6",
+    "@angular/cdk": "^18.0.6",
+    "@angular/common": "^18.0.6",
+    "@angular/compiler": "^18.0.6",
+    "@angular/core": "^18.0.6",
+    "@angular/forms": "^18.0.6",
+    "@angular/material": "^18.0.6",
+    "@angular/platform-browser": "^18.0.6",
+    "@angular/platform-browser-dynamic": "^18.0.6",
+    "@angular/router": "^18.0.6",
     "@gerandon/ngx-widgets": "file:../ngx-widgets/dist/ngx-widgets",
     "bootstrap": "^5.3.3",
     "lodash-es": "^4.17.21",
@@ -28,9 +29,9 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.6",
-    "@angular/cli": "^17.2.3",
-    "@angular/compiler-cli": "^17.2.0",
+    "@angular-devkit/build-angular": "^18.0.7",
+    "@angular/cli": "^18.0.7",
+    "@angular/compiler-cli": "^18.0.6",
     "@types/jasmine": "~5.1.0",
     "@types/lodash-es": "^4.17.12",
     "jasmine-core": "~5.1.0",
@@ -39,7 +40,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-packagr": "^17.3.0",
-    "typescript": "~5.3.2"
+    "ng-packagr": "^18.0.0",
+    "typescript": "~5.4.5"
   }
 }
