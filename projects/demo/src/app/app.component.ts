@@ -1,11 +1,8 @@
 import {Component, inject} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {BasicInputComponent} from "../../../ngx-widgets/src/lib/basic-input/basic-input.component";
-import {SelectComponent} from "../../../ngx-widgets/src/lib/select/select.component";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Observable, of} from "rxjs";
-import {TextareaInputComponent} from "../../../ngx-widgets/src/lib/textarea-input/textarea-input.component";
-import {BasicChipsComponent} from "../../../ngx-widgets/src/lib/basic-chips/basic-chips.component";
+import {BasicChipsComponent, BasicInputComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
 
 @Component({
   selector: 'app-root',
