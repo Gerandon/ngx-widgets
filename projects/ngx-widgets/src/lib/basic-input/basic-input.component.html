@@ -49,7 +49,7 @@
       <mat-error *ngIf="control.errors?.[error.key]">
         @if(!!validatorMessages?.[error.key]) {
           {{ error.value }}
-        } @else if (!!validationTranslations[error.key]) {
+        } @else if (!!validationTranslations?.[error.key]) {
           {{ validationTranslations[error.key] }}
         }
       </mat-error>
