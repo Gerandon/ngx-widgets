@@ -34,7 +34,7 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   @Input() public hintLabel = '';
   public validatorMessagesArray: { key: string, value: unknown }[] = [];
 
-  constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes) {
+  constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes | { [key: string]: string }) {
     super();
   }
 
