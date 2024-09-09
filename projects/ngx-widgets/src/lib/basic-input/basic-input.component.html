@@ -30,16 +30,23 @@
     @if (suffix) {
       <span matSuffix style="margin-right: 10px">{{suffix}}</span>
     }
+
     @if (control.errors?.['server']) {
       <mat-error>{{ control.errors?.['server'] }}</mat-error>
     } @else if (control.errors?.['required'] && validationTranslations.required) {
       <mat-error>{{ validationTranslations.required }}</mat-error>
     } @else {
-      @for (error of validatorMessagesArray; track error) {
+
+    }
+    @for (error of validatorMessagesArray; track error.key) {
+      <!--
+        this @if makes the mat-error to be placed out of subscript-wrapper
+        that way the error message will be inside the input, not under the field as the others....
+
         @if (control.errors?.[error.key]) {
-          <mat-error>{{ error.value }}</mat-error>
         }
-      }
+      -->
+      <mat-error *ngIf="control.errors?.[error.key]">{{ error.value }}</mat-error>
     }
   </mat-form-field>
 </div>

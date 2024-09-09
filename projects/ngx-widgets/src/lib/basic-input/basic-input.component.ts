@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { BaseTextInput } from '../core/base-text-input';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'gerandon-basic-input',
@@ -24,6 +25,7 @@ import { BaseTextInput } from '../core/base-text-input';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    NgIf,
   ],
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicInputComponent), multi: true },

@@ -4,7 +4,12 @@
       <fieldset>
         <legend>Simple inputs</legend>
         <div class="row mt-3">
-          <gerandon-basic-input class="col-md-6 col-12" formControlName="textInput" label="Text input" hintLabel="Test hint"></gerandon-basic-input>
+          <gerandon-basic-input class="col-md-6 col-12"
+                                formControlName="textInput"
+                                [validatorMessages]="{ invalidValidationTest: 'Test validation message' }"
+                                label="Text input"
+                                hintLabel="Test hint">
+          </gerandon-basic-input>
           <gerandon-basic-input class="col-md-6 col-12" formControlName="numberInput" type="number" label="Number input"></gerandon-basic-input>
           <gerandon-basic-input class="col-md-6 col-12" formControlName="phoneInput" type="tel" label="Phone input"></gerandon-basic-input>
         </div>
