@@ -22,11 +22,18 @@
           </gerandon-basic-input>
           <gerandon-basic-input class="col-md-6 col-12"
                                 formControlName="maskedTextInput"
+                                label="Masked text input"
+                                [hintLabel]="'Control value:' + formGroup.controls.maskedTextInput.value!">
+          </gerandon-basic-input>
+          <!--
+          <gerandon-basic-input class="col-md-6 col-12"
+                                formControlName="maskedTextInput"
                                 mask="00000000-0-00"
                                 [showMaskTyped]="true"
                                 label="Masked text input"
                                 [hintLabel]="'Control value:' + formGroup.controls.maskedTextInput.value!">
           </gerandon-basic-input>
+          -->
         </div>
       </fieldset>
       <fieldset>
