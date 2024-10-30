@@ -8,10 +8,25 @@
                                 formControlName="textInput"
                                 [validatorMessages]="{ invalidValidationTest: 'Test validation message' }"
                                 label="Text input"
-                                hintLabel="Test hint">
+                                [hintLabel]="'Control value:' + formGroup.controls.textInput.value!">
           </gerandon-basic-input>
-          <gerandon-basic-input class="col-md-6 col-12" formControlName="numberInput" type="number" label="Number input"></gerandon-basic-input>
-          <gerandon-basic-input class="col-md-6 col-12" formControlName="phoneInput" type="tel" label="Phone input"></gerandon-basic-input>
+          <gerandon-basic-input class="col-md-6 col-12"
+                                formControlName="numberInput"
+                                type="number"
+                                label="Number input">
+          </gerandon-basic-input>
+          <gerandon-basic-input class="col-md-6 col-12"
+                                formControlName="phoneInput"
+                                type="tel"
+                                label="Phone input">
+          </gerandon-basic-input>
+          <gerandon-basic-input class="col-md-6 col-12"
+                                formControlName="maskedTextInput"
+                                mask="00000000-0-00"
+                                [showMaskTyped]="true"
+                                label="Masked text input"
+                                [hintLabel]="'Control value:' + formGroup.controls.maskedTextInput.value!">
+          </gerandon-basic-input>
         </div>
       </fieldset>
       <fieldset>

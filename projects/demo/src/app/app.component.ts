@@ -33,6 +33,7 @@ export class AppComponent {
 
   public readonly formGroup = inject(FormBuilder).group({
     textInput: ['', [Validators.required, (ctrl: AbstractControl) => ({ invalidValidationTest: true })]],
+    maskedTextInput: '',
     numberInput: '',
     phoneInput: '',
     syncSelect: 'option_one',
