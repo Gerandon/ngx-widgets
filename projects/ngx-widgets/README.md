@@ -43,14 +43,14 @@ Be patient with me, I'm trying to figure out what this README should really cont
     </tbody>
 </table>
 
-##Widgets (built-in examples)
+## Widgets (built-in examples)
 There are a few custom components, just to present how the core functionality and implementation works and makes
 the development easier (especially in case of a newly created project)
 
 In the following example you can see a custom CVA implementation built into the library (as widget)
 
 As you can see, instead of defining what our CVA will look like, we could use the Base implementation from the core of the library. That way (as seen) our component will have significantly less code on its TS side and we also reduced redundancy as well.
-###BasicInput (component)
+### BasicInput (component)
 ```typescript
 @Component({
     selector: 'basic-input',
