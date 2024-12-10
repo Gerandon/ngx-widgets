@@ -3,16 +3,18 @@ import {
   Directive, Inject, inject, InjectionToken,
   Input, OnChanges,
   OnInit, Optional, SimpleChanges,
+  input
 } from '@angular/core';
-import { FloatLabelType, SubscriptSizing } from '@angular/material/form-field';
+import {FloatLabelType, SubscriptSizing} from '@angular/material/form-field';
 
-import { BaseValueAccessor } from './base-value-accessor';
-import { isEmpty, keys } from 'lodash-es';
+import {BaseValueAccessor} from './base-value-accessor';
+import {isEmpty, keys} from 'lodash-es';
 
 export interface NgxWidgetsValidationErrorTypes {
   required?: string;
   selectGlobalPlaceholder?: string;
 }
+
 export const NGX_WIDGETS_VALIDATION_TRANSLATIONS = new InjectionToken<NgxWidgetsValidationErrorTypes>('NGX_WIDGETS_VALIDATION_TRANSLATIONS');
 
 @Directive()
@@ -21,17 +23,19 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   @Input() public id!: string;
   @Input() public name!: string;
   @Input() public label!: string;
-  @Input() public translateParams?: unknown;
+  public readonly translateParams = input<unknown>();
   @Input() public placeholder!: string;
-  @Input() public isDisabled? = false;
-  @Input() public floatLabel: FloatLabelType = 'auto';
+  public readonly isDisabled = input<boolean | undefined>(false);
+  public readonly floatLabel = input<FloatLabelType>('auto');
   @Input() public prefixIcon?: string;
   @Input() public suffixIcon?: string;
   @Input() public suffix?: string;
-  @Input() public formControlName?: string;
-  @Input() public validatorMessages?: { [key: string]: string };
-  @Input() public subscriptSizing: SubscriptSizing = 'fixed';
-  @Input() public hintLabel = '';
+  public readonly formControlName = input<string>();
+  public readonly validatorMessages = input<{
+    [key: string]: string;
+  }>();
+  public readonly subscriptSizing = input<SubscriptSizing>('fixed');
+  public readonly hintLabel = input('');
   public validatorMessagesArray: { key: string, value: unknown }[] = [];
 
   constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes | any = {}) {
@@ -41,7 +45,7 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   ngOnInit() {
     this.placeholder = this.placeholder === undefined ? this.label : this.placeholder;
     if (!this.name) {
-      this.name = this.formControlName!;
+      this.name = this.formControlName()!;
       /*
       console.warn(`name attribute is not defined for ${this.formControlName}! Please beware, that using this control multiple
       times with the same control name could result in wrong focus, clicking on the label!`);
@@ -53,10 +57,11 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['validatorMessages']) {
-      if (!isEmpty(this.validatorMessages)) {
-        this.validatorMessagesArray = keys(this.validatorMessages).map((key) => ({
+      const validatorMessages = this.validatorMessages();
+      if (!isEmpty(validatorMessages)) {
+        this.validatorMessagesArray = keys(validatorMessages).map((key) => ({
           key,
-          value: this.validatorMessages![key],
+          value: this.validatorMessages()![key],
         }));
       }
     }

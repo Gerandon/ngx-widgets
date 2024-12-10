@@ -1,6 +1,6 @@
 import {
   Directive,
-  Input,
+  input
 } from '@angular/core';
 
 import { BaseInput } from './base-input';
@@ -8,6 +8,6 @@ import { BaseInput } from './base-input';
 @Directive()
 export class BaseTextInput<T> extends BaseInput<T> {
 
-  @Input() public type: ('text' | 'password' | 'number' | 'email' | 'tel') = 'text';
-  @Input() public maxLength? = 512;
+  public readonly type = input<('text' | 'password' | 'number' | 'email' | 'tel')>('text');
+  public readonly maxLength = input<number | undefined>(512);
 }

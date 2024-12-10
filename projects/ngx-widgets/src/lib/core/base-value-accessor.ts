@@ -2,8 +2,9 @@ import {
   AfterViewInit,
   ChangeDetectorRef, Directive,
   ElementRef, inject,
-  Injector, Input, OnDestroy, Type,
+  Injector, OnDestroy, Type,
   ViewChild,
+  input
 } from '@angular/core';
 import {
   AbstractControl,
@@ -18,7 +19,7 @@ import {Observable, of, Subject} from 'rxjs';
 @Directive()
 export class BaseValueAccessor<T> implements ControlValueAccessor, AfterViewInit, Validator, OnDestroy {
 
-  @Input() public validator: Observable<ValidationErrors> = of({});
+  public readonly validator = input<Observable<ValidationErrors>>(of({}));
   @ViewChild('inputElement') inputElement!: ElementRef;
   @ViewChild('input') input!: NgControl;
 
@@ -45,7 +46,7 @@ export class BaseValueAccessor<T> implements ControlValueAccessor, AfterViewInit
 
   validate(control: AbstractControl): Observable<ValidationErrors> {
     control.setErrors({ ...control.errors, pending: true });
-    return this.validator;
+    return this.validator();
   }
 
   ngAfterViewInit() {

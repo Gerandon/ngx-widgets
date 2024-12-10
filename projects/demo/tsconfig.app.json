@@ -3,7 +3,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@gerandon/ngx-widgets": [
+        "./dist/ngx-widgets"
+      ]
+    }
   },
   "files": [
     "src/main.ts"

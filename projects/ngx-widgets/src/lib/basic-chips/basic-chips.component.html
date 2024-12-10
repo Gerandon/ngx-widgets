@@ -1,6 +1,6 @@
-<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [floatLabel]="floatLabel()">
   @if (label) {
-    <mat-label [class.disabled]="isDisabled">{{ label }}</mat-label>
+    <mat-label [class.disabled]="isDisabled()">{{ label }}</mat-label>
   }
   <mat-chip-grid #chipGrid class="w-100">
     @for(item of control.value; track item) {
@@ -20,7 +20,7 @@
            (matChipInputTokenEnd)="!labelProperty && add($event)"/>
     <mat-autocomplete #auto="matAutocomplete"
                       (optionSelected)="selected($event)">
-      @for (filterItem of asyncOptions | async; track filterItem) {
+      @for (filterItem of asyncOptions() | async; track filterItem) {
         <mat-option [value]="filterItem">
           {{labelProperty ? filterItem[labelProperty] : filterItem}}
         </mat-option>
