@@ -11,7 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "ngx-widgets": [
+      "@gerandon/ngx-widgets": [
         "./dist/ngx-widgets"
       ]
     },
