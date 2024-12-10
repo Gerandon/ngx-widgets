@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^19.0.3",
     "@angular/platform-browser-dynamic": "^19.0.3",
     "@angular/router": "^19.0.3",
-    "@gerandon/ngx-widgets": "file:../ngx-widgets/dist/ngx-widgets",
+    "@gerandon/ngx-widgets": "^19.0.0",
     "bootstrap": "^5.3.3",
     "lodash-es": "^4.17.21",
     "ngx-mask": "^17.0.8",

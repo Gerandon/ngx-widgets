@@ -1,7 +1,7 @@
 <div class="textarea-input cva-input">
-  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [floatLabel]="floatLabel()">
     @if (label) {
-      <mat-label [class.disabled]="isDisabled">{{ label }}</mat-label>
+      <mat-label [class.disabled]="isDisabled()">{{ label }}</mat-label>
     }
     <textarea
       [id]="id"
@@ -10,16 +10,16 @@
       #autosize="cdkTextareaAutosize"
       matInput
       cdkTextareaAutosize
-      [cdkAutosizeMinRows]="rows"
+      [cdkAutosizeMinRows]="rows()"
       class="w-100 cva-control"
-      [attr.disabled]="isDisabled || control.disabled ? '' : null"
-      [readonly]="isDisabled"
+      [attr.disabled]="isDisabled() || control.disabled ? '' : null"
+      [readonly]="isDisabled()"
       [placeholder]="placeholder"
       [formControl]="control"
-      [maxLength]="maxLength"
+      [maxLength]="maxLength()"
       [name]="name">
     </textarea>
-    <span class="counter">{{control.value?.length || 0}} / {{ maxLength }}</span>
+    <span class="counter">{{control.value?.length || 0}} / {{ maxLength() }}</span>
     @if (prefixIcon) {
       <mat-icon matPrefix color="accent">
         {{prefixIcon}}

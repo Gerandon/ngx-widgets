@@ -1,16 +1,16 @@
-<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [floatLabel]="floatLabel">
+<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [floatLabel]="floatLabel()">
   @if (label) {
     <mat-label>{{ label }}</mat-label>
   }
   <mat-select #inputElement
               #input="ngForm"
-              [multiple]="multiple"
-              [placeholder]="!floatLabel ? label : placeholder"
+              [multiple]="multiple()"
+              [placeholder]="!floatLabel() ? label : placeholder"
               [formControl]="control"
               [id]="id"
-              [class.input-disabled]="isDisabled || control.disabled"
+              [class.input-disabled]="isDisabled() || control.disabled"
               [compareWith]="_isEqual"
-              [attr.disabled]="isDisabled || control.disabled ? '' : null">
+              [attr.disabled]="isDisabled() || control.disabled ? '' : null">
     @if (emptyOptionLabel) {
       <mat-option (click)="control.reset()">
         {{ emptyOptionLabel }}

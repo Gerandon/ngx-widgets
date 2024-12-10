@@ -1,10 +1,9 @@
 import {
   Component,
-  EventEmitter,
   forwardRef,
   OnInit,
-  Output,
   ViewEncapsulation,
+  output
 } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +33,7 @@ import {NgIf} from "@angular/common";
 })
 export class BasicInputComponent extends BaseTextInput<string> implements OnInit {
 
-  @Output() iconClick = new EventEmitter();
+  readonly iconClick = output();
 
   override ngOnInit() {
     super.ngOnInit();

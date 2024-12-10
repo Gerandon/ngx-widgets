@@ -1,5 +1,4 @@
 import {Component, inject} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {BasicChipsComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
@@ -9,7 +8,6 @@ import {BasicInputComponent} from "../../../ngx-widgets/src/lib/basic-input/basi
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
     BasicInputComponent,
     SelectComponent,
     ReactiveFormsModule,
