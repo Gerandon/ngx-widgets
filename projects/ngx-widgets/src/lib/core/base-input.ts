@@ -20,15 +20,32 @@ export const NGX_WIDGETS_VALIDATION_TRANSLATIONS = new InjectionToken<NgxWidgets
 @Directive()
 export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterViewInit, OnChanges {
 
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public id!: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public name!: string;
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public label!: string;
   public readonly translateParams = input<unknown>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public placeholder!: string;
   public readonly isDisabled = input<boolean | undefined>(false);
   public readonly floatLabel = input<FloatLabelType>('auto');
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public prefixIcon?: string;
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public suffixIcon?: string;
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public suffix?: string;
   public readonly formControlName = input<string>();
   public readonly validatorMessages = input<{

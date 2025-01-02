@@ -34,6 +34,9 @@ import {MatInput} from "@angular/material/input";
 export class BasicChipsComponent<T> extends BaseInput<T[]> {
 
   public readonly asyncOptions = input<Observable<T[]>>();
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public labelProperty?: keyof T;
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
 

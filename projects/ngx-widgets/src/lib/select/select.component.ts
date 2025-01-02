@@ -45,8 +45,13 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
   /**
    * In this case, an empty option appears that resets the control, to an empty value state
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public emptyOptionLabel?: string;
   public readonly multiple = input<boolean>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public options!: SelectOptionType[];
   public readonly asyncOptions = input<Observable<SelectOptionType[]>>();
   @ViewChildren('optionElements') public optionElements!: QueryList<ElementRef>;
