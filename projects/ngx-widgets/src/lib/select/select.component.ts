@@ -57,7 +57,7 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
   public readonly _isEqual = isEqual;
 
   override ngOnInit() {
-    this.placeholder = !this.placeholder ? (this.validationTranslations.selectGlobalPlaceholder || this.label) : this.placeholder;
+    this.placeholder = !this.placeholder ? (this.validationTranslations?.selectGlobalPlaceholder || this.label) : this.placeholder;
     super.ngOnInit();
     this.id = this.id || this.formControlName || this.name;
     if (this.asyncOptions) {

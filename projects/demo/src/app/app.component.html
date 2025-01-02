@@ -20,20 +20,33 @@
                                 type="tel"
                                 label="Phone input">
           </gerandon-basic-input>
-          <gerandon-basic-input class="col-md-6 col-12"
-                                formControlName="maskedTextInput"
-                                label="Masked text input"
-                                [hintLabel]="'Control value:' + formGroup.controls.maskedTextInput.value!">
-          </gerandon-basic-input>
-          <!--
-          <gerandon-basic-input class="col-md-6 col-12"
-                                formControlName="maskedTextInput"
-                                mask="00000000-0-00"
-                                [showMaskTyped]="true"
-                                label="Masked text input"
-                                [hintLabel]="'Control value:' + formGroup.controls.maskedTextInput.value!">
-          </gerandon-basic-input>
-          -->
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Masked inputs</legend>
+        <div class="row mt-3">
+          <div class="col-md-6 col-12">
+            <gerandon-basic-input
+              formControlName="maskedTextInput"
+              mask="00000000-0-00"
+              [specialCharacters]="['-']"
+              [dropSpecialCharacters]="false"
+              [showMaskTyped]="true"
+              label="Masked with value">
+            </gerandon-basic-input>
+            <p>Control value: {{ formGroup.controls.maskedTextInput.value }}</p>
+          </div>
+          <div class="col-md-6 col-12">
+            <gerandon-basic-input
+              formControlName="maskedTextInput2"
+              mask="00000000-0-00"
+              [specialCharacters]="['-']"
+              [dropSpecialCharacters]="true"
+              [showMaskTyped]="true"
+              label="Masked with unmasked value">
+            </gerandon-basic-input>
+            <p>Control value: {{ formGroup.controls.maskedTextInput2.value }}</p>
+          </div>
         </div>
       </fieldset>
       <fieldset>

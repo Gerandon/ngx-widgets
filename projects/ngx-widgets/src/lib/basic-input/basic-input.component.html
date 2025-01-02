@@ -7,6 +7,7 @@
       [id]="id"
       #inputElement
       #input="ngForm"
+      #maskInput="ngxMask"
       matInput
       [style.padding-right]="(suffix || prefixIcon) && '35px'"
       [type]="type"
@@ -16,7 +17,12 @@
       [formControl]="control"
       [maxLength]="maxLength"
       [name]="name"
-      [required]="!!control.errors?.['required']"/>
+      [mask]="mask"
+      [triggerOnMaskChange]="true"
+      [showMaskTyped]="showMaskTyped"
+      [specialCharacters]="specialCharacters!"
+      [placeHolderCharacter]="placeHolderCharacter!"
+    />
     @if (prefixIcon) {
       <mat-icon matPrefix color="accent">
         {{prefixIcon}}
