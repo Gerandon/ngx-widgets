@@ -10,6 +10,8 @@ export class BaseMaskInput extends BaseTextInput<string> implements OnInit, Afte
   @Input() public dropSpecialCharacters?: string[] | boolean | readonly string[] | null;
   @Input() public specialCharacters?: string[] | undefined;
   @Input() public placeHolderCharacter: string = '_';
+  @Input() public maskPrefix: string = '';
+  @Input() public maskSuffix: string = '';
 
   @ViewChild('maskInput') maskInput!: NgxMaskDirective;
 
@@ -21,7 +23,9 @@ export class BaseMaskInput extends BaseTextInput<string> implements OnInit, Afte
   override ngAfterViewInit() {
     super.ngAfterViewInit();
 
-    this.maskInput._maskService.dropSpecialCharacters = this.dropSpecialCharacters!;
-    this.maskInput['_applyMask']();
+    if (this.maskInput) {
+      this.maskInput._maskService.dropSpecialCharacters = this.dropSpecialCharacters!;
+      this.maskInput['_applyMask']();
+    }
   }
 }
