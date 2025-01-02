@@ -3,26 +3,45 @@
     @if (label) {
       <mat-label [class.disabled]="isDisabled()">{{label}}</mat-label>
     }
-    <input
-      [id]="id"
-      #inputElement
-      #input="ngForm"
-      #maskInput="ngxMask"
-      matInput
-      [style.padding-right]="(suffix || prefixIcon) && '35px'"
-      [type]="type()"
-      [attr.disabled]="isDisabled() || control.disabled ? '' : null"
-      [readonly]="isDisabled()"
-      [placeholder]="placeholder"
-      [formControl]="control"
-      [maxLength]="maxLength()"
-      [name]="name"
-      [mask]="mask()"
-      [triggerOnMaskChange]="true"
-      [showMaskTyped]="showMaskTyped()"
-      [specialCharacters]="specialCharacters()!"
-      [placeHolderCharacter]="placeHolderCharacter()!"
-    />
+    @if(mask()) {
+      <input
+        [id]="id"
+        #inputElement
+        #input="ngForm"
+        #maskInput="ngxMask"
+        matInput
+        [style.padding-right]="(suffix || prefixIcon) && '35px'"
+        [type]="type()"
+        [attr.disabled]="isDisabled() || control.disabled ? '' : null"
+        [readonly]="isDisabled()"
+        [placeholder]="placeholder"
+        [formControl]="control"
+        [maxLength]="maxLength()"
+        [name]="name"
+        [mask]="mask()"
+        [triggerOnMaskChange]="true"
+        [showMaskTyped]="showMaskTyped()"
+        [specialCharacters]="specialCharacters()!"
+        [placeHolderCharacter]="placeHolderCharacter()!"
+        [prefix]="maskPrefix()"
+        [suffix]="maskSuffix()"
+      />
+    } @else {
+      <input
+        [id]="id"
+        #inputElement
+        #input="ngForm"
+        matInput
+        [style.padding-right]="(suffix || prefixIcon) && '35px'"
+        [type]="type()"
+        [attr.disabled]="isDisabled() || control.disabled ? '' : null"
+        [readonly]="isDisabled()"
+        [placeholder]="placeholder"
+        [formControl]="control"
+        [maxLength]="maxLength()"
+        [name]="name"
+      />
+    }
     @if (prefixIcon) {
       <mat-icon matPrefix color="accent">
         {{prefixIcon}}
