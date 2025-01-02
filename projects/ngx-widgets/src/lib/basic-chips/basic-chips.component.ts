@@ -1,12 +1,12 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, forwardRef, Input, ViewEncapsulation } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {AsyncPipe, JsonPipe} from '@angular/common';
+import {Component, forwardRef, Input, ViewEncapsulation, input} from '@angular/core';
+import {NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
+import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
 
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import {BaseInput} from "../core/base-input";
 import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
@@ -17,7 +17,7 @@ import {MatInput} from "@angular/material/input";
   styleUrls: ['basic-chips.component.scss'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicChipsComponent), multi: true }],
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicChipsComponent), multi: true}],
   imports: [
     MatChipsModule,
     MatIconModule,
@@ -33,7 +33,10 @@ import {MatInput} from "@angular/material/input";
 })
 export class BasicChipsComponent<T> extends BaseInput<T[]> {
 
-  @Input() public asyncOptions?: Observable<T[]>;
+  public readonly asyncOptions = input<Observable<T[]>>();
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public labelProperty?: keyof T;
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
 

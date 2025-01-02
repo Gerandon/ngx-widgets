@@ -7,6 +7,7 @@ import {
   QueryList,
   ViewChildren,
   ViewEncapsulation,
+  input
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -44,10 +45,15 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
   /**
    * In this case, an empty option appears that resets the control, to an empty value state
    */
+  // TODO: Skipped for migration because:
+  //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
+  //  and migrating would break narrowing currently.
   @Input() public emptyOptionLabel?: string;
-  @Input() public multiple?: boolean;
+  public readonly multiple = input<boolean>();
+  // TODO: Skipped for migration because:
+  //  Your application code writes to the input. This prevents migration.
   @Input() public options!: SelectOptionType[];
-  @Input() public asyncOptions!: Observable<SelectOptionType[]>;
+  public readonly asyncOptions = input<Observable<SelectOptionType[]>>();
   @ViewChildren('optionElements') public optionElements!: QueryList<ElementRef>;
 
   /**
@@ -57,11 +63,12 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
   public readonly _isEqual = isEqual;
 
   override ngOnInit() {
-    this.placeholder = !this.placeholder ? (this.validationTranslations.selectGlobalPlaceholder || this.label) : this.placeholder;
+    this.placeholder = !this.placeholder ? (this.validationTranslations?.selectGlobalPlaceholder || this.label) : this.placeholder;
     super.ngOnInit();
-    this.id = this.id || this.formControlName || this.name;
-    if (this.asyncOptions) {
-      this.asyncOptions.pipe(takeUntil(this.destroy$)).subscribe((resp) => {
+    this.id = this.id || this.formControlName() || this.name;
+    const asyncOptions = this.asyncOptions();
+    if (asyncOptions) {
+      asyncOptions.pipe(takeUntil(this.destroy$)).subscribe((resp) => {
         this.options = resp;
         this.cdr.detectChanges();
       });

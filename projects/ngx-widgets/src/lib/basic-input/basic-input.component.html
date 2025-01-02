@@ -1,22 +1,28 @@
 <div class="basic-input cva-input">
-  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing" [hintLabel]="hintLabel" [floatLabel]="floatLabel">
+  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [hintLabel]="hintLabel()" [floatLabel]="floatLabel()">
     @if (label) {
-      <mat-label [class.disabled]="isDisabled">{{label}}</mat-label>
+      <mat-label [class.disabled]="isDisabled()">{{label}}</mat-label>
     }
     <input
       [id]="id"
       #inputElement
       #input="ngForm"
+      #maskInput="ngxMask"
       matInput
       [style.padding-right]="(suffix || prefixIcon) && '35px'"
-      [type]="type"
-      [attr.disabled]="isDisabled || control.disabled ? '' : null"
-      [readonly]="isDisabled"
+      [type]="type()"
+      [attr.disabled]="isDisabled() || control.disabled ? '' : null"
+      [readonly]="isDisabled()"
       [placeholder]="placeholder"
       [formControl]="control"
-      [maxLength]="maxLength"
+      [maxLength]="maxLength()"
       [name]="name"
-      [required]="!!control.errors?.['required']"/>
+      [mask]="mask()"
+      [triggerOnMaskChange]="true"
+      [showMaskTyped]="showMaskTyped()"
+      [specialCharacters]="specialCharacters()!"
+      [placeHolderCharacter]="placeHolderCharacter()!"
+    />
     @if (prefixIcon) {
       <mat-icon matPrefix color="accent">
         {{prefixIcon}}
@@ -47,7 +53,7 @@
         }
       -->
       <mat-error *ngIf="control.errors?.[error.key]">
-        @if(!!validatorMessages?.[error.key]) {
+        @if(!!validatorMessages()?.[error.key]) {
           {{ error.value }}
         } @else if (!!validationTranslations?.[error.key]) {
           {{ validationTranslations[error.key] }}

@@ -1,15 +1,12 @@
 import {Component, inject} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Observable, of} from "rxjs";
-import {BasicChipsComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
-import {BasicInputComponent} from "../../../ngx-widgets/src/lib/basic-input/basic-input.component";
+import {BasicChipsComponent, BasicInputComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
     BasicInputComponent,
     SelectComponent,
     ReactiveFormsModule,
@@ -33,7 +30,8 @@ export class AppComponent {
 
   public readonly formGroup = inject(FormBuilder).group({
     textInput: ['', [Validators.required, (ctrl: AbstractControl) => ({ invalidValidationTest: true })]],
-    maskedTextInput: '',
+    maskedTextInput: '12312312312',
+    maskedTextInput2: '12312312312',
     numberInput: '',
     phoneInput: '',
     syncSelect: 'option_one',

@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, ViewEncapsulation } from '@angular/core';
+import { Component, forwardRef, ViewEncapsulation, input } from '@angular/core';
 import { FormsModule, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,6 @@ import {BaseTextInput} from "../core/base-text-input";
 })
 export class TextareaInputComponent extends BaseTextInput<string> {
 
-  @Input() public rows = 10;
+  public readonly rows = input(10);
 
 }
