@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [hintLabel]="_hintLabel"  [floatLabel]="floatLabel()">
+<mat-form-field [appearance]="_appearance()" [subscriptSizing]="subscriptSizing()" [hintLabel]="_hintLabel"  [floatLabel]="floatLabel()">
   @if (label) {
     <mat-label [class.disabled]="isDisabled()">{{ label }}</mat-label>
   }
