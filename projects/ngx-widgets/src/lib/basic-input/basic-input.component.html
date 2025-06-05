@@ -1,5 +1,5 @@
 <div class="basic-input cva-input">
-  <mat-form-field appearance="outline" [subscriptSizing]="subscriptSizing()" [hintLabel]="hintLabel()" [floatLabel]="floatLabel()">
+  <mat-form-field [appearance]="_appearance()" [subscriptSizing]="subscriptSizing()" [hintLabel]="hintLabel()" [floatLabel]="floatLabel()">
     @if (label) {
       <mat-label [class.disabled]="isDisabled()">{{label}}</mat-label>
     }

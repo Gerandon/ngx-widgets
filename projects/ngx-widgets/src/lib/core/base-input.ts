@@ -3,9 +3,9 @@ import {
   Directive, Inject, inject, InjectionToken,
   Input, OnChanges,
   OnInit, Optional, SimpleChanges,
-  input
+  input, signal
 } from '@angular/core';
-import {FloatLabelType, SubscriptSizing} from '@angular/material/form-field';
+import {FloatLabelType, MatFormFieldAppearance, SubscriptSizing} from '@angular/material/form-field';
 
 import {BaseValueAccessor} from './base-value-accessor';
 import {isEmpty, keys} from 'lodash-es';
@@ -16,10 +16,14 @@ export interface NgxWidgetsValidationErrorTypes {
 }
 
 export const NGX_WIDGETS_VALIDATION_TRANSLATIONS = new InjectionToken<NgxWidgetsValidationErrorTypes>('NGX_WIDGETS_VALIDATION_TRANSLATIONS');
+export const NGX_WIDGETS_FORM_FIELD_APPEARANCE = new InjectionToken<MatFormFieldAppearance>('NGX_WIDGETS_FORM_FIELD_APPEARANCE');
 
 @Directive()
 export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterViewInit, OnChanges {
 
+  protected readonly appearance = input<MatFormFieldAppearance>();
+  // Used on Template
+  protected readonly _appearance = signal<MatFormFieldAppearance>('outline');
   // TODO: Skipped for migration because:
   //  Your application code writes to the input. This prevents migration.
   @Input() public id!: string;
@@ -55,7 +59,8 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   public readonly hintLabel = input('');
   public validatorMessagesArray: { key: string, value: unknown }[] = [];
 
-  constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes | any = {}) {
+  constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes | any = {},
+              @Optional() @Inject(NGX_WIDGETS_FORM_FIELD_APPEARANCE) protected readonly formFieldAppearance: MatFormFieldAppearance) {
     super();
   }
 
@@ -70,6 +75,10 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
     }
     // *ngIf seems like does not re-render component when label is used with dynamic value (e.g.: translate pipe). Strange
     this.label = this.label || ' ';
+
+    if (this.formFieldAppearance && !this.appearance()) {
+      this._appearance.set(this.formFieldAppearance);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
