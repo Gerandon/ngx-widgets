@@ -1,6 +1,6 @@
 # NgxWidgets
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.x.
+This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
 
 ## Short Description
 This is basically a utility-widget Angular library, for creating `ControlValueAccessors` in an easier way, by implementing and extending
