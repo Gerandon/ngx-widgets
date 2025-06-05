@@ -86,7 +86,9 @@
           <gerandon-basic-chips class="col-md-6 col-12"
                                 formControlName="autocompleteChips"
                                 labelProperty="label"
-                                [asyncOptions]="asyncOptions"
+                                [asyncFilterFn]="asyncFilterFn"
+                                [startAsyncFnAt]="3"
+                                hintLabel="Kezdjen el gépelni..."
                                 label="Async Autocomplete chips">
           </gerandon-basic-chips>
         </div>

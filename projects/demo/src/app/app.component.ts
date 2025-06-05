@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Observable, of} from "rxjs";
+import {map, Observable, of} from "rxjs";
 import {BasicChipsComponent, BasicInputComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
 
 @Component({
@@ -27,6 +27,13 @@ export class AppComponent {
     { label: 'Async Option 1', value: 'option_one' },
     { label: 'Async Option 2', value: 'option_two' },
   ]);
+
+  public readonly asyncFilterFn = (searchValue: string) => {
+    console.log(searchValue);
+    return this.asyncOptions.pipe(
+      map((list) => list.filter((act: any) => act.label.startsWith(searchValue)))
+    );
+  };
 
   public readonly formGroup = inject(FormBuilder).group({
     textInput: ['', [Validators.required, (ctrl: AbstractControl) => ({ invalidValidationTest: true })]],
