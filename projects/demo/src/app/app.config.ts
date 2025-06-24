@@ -11,6 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(),
+    provideAnimationsAsync(),
     {
       provide: NGX_WIDGETS_VALIDATION_TRANSLATIONS,
       useValue: {

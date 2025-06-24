@@ -6,6 +6,9 @@
         <div class="row mt-3">
           <gerandon-basic-input class="col-md-6 col-12"
                                 formControlName="textInput"
+                                aria-label="Text input"
+                                aria-description="This is a text input"
+                                [aria-placeholder]="'Control value:' + formGroup.controls.textInput.value!"
                                 [validatorMessages]="{ invalidValidationTest: 'Test validation message' }"
                                 label="Text input"
                                 [hintLabel]="'Control value:' + formGroup.controls.textInput.value!">
@@ -72,6 +75,7 @@
                                    formControlName="textareaInput"
                                    label="Textarea input"
                                    hintLabel="Test hint"
+                                   [aria-description]="'A maximálisan megadható karakter szám: 2000'"
                                    [maxLength]="2000">
           </gerandon-textarea-input>
         </div>
@@ -88,6 +92,7 @@
                                 labelProperty="label"
                                 [asyncFilterFn]="asyncFilterFn"
                                 [startAsyncFnAt]="3"
+                                [aria-description]="'nincs'"
                                 hintLabel="Kezdjen el gépelni..."
                                 label="Async Autocomplete chips">
           </gerandon-basic-chips>

@@ -16,13 +16,17 @@
            [placeholder]="placeholder || label"
            [matAutocomplete]="auto"
            (input)="filter()"
+           [attr.aria-placeholder]="ariaPlaceholder() || placeholder"
+           [attr.aria-label]="ariaLabel() || label"
+           [attr.aria-describedby]="ariaDescribedBy()"
+           [attr.aria-description]="ariaDescription()"
            [matChipInputFor]="chipGrid"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            (matChipInputTokenEnd)="!labelProperty && add($event)"/>
     <mat-autocomplete #auto="matAutocomplete"
                       (optionSelected)="selected($event)">
       @for (filterItem of filterOptions$ | async; track filterItem) {
-        <mat-option [value]="filterItem">
+        <mat-option [value]="filterItem" [attr.aria-label]="labelProperty ? filterItem[labelProperty] : filterItem">
           {{labelProperty ? filterItem[labelProperty] : filterItem}}
         </mat-option>
       }

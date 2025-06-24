@@ -9,6 +9,7 @@ import {FloatLabelType, MatFormFieldAppearance, SubscriptSizing} from '@angular/
 
 import {BaseValueAccessor} from './base-value-accessor';
 import {isEmpty, keys} from 'lodash-es';
+import {LiveAnnouncer} from "@angular/cdk/a11y";
 
 export interface NgxWidgetsValidationErrorTypes {
   required?: string;
@@ -19,9 +20,9 @@ export const NGX_WIDGETS_VALIDATION_TRANSLATIONS = new InjectionToken<NgxWidgets
 export const NGX_WIDGETS_FORM_FIELD_APPEARANCE = new InjectionToken<MatFormFieldAppearance>('NGX_WIDGETS_FORM_FIELD_APPEARANCE');
 
 @Directive()
-export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterViewInit, OnChanges {
+export class BaseInput<T, ANNOUNCER_TYPE = object> extends BaseValueAccessor<T> implements OnInit, AfterViewInit, OnChanges {
 
-  protected readonly appearance = input<MatFormFieldAppearance>();
+  public readonly appearance = input<MatFormFieldAppearance>();
   // Used on Template
   protected readonly _appearance = signal<MatFormFieldAppearance>('outline');
   // TODO: Skipped for migration because:
@@ -57,7 +58,14 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   }>();
   public readonly subscriptSizing = input<SubscriptSizing>('fixed');
   public readonly hintLabel = input('');
+  public readonly ariaLabel = input('', { alias: 'aria-label' });
+  public readonly ariaPlaceholder = input('', { alias: 'aria-placeholder' });
+  public readonly ariaDescribedBy = input('', { alias: 'aria-describedby' });
+  public readonly ariaDescription = input('', { alias: 'aria-description' });
+  private readonly liveAnnouncer = inject(LiveAnnouncer);
+  public readonly announcerTranslations = input<ANNOUNCER_TYPE>();
   public validatorMessagesArray: { key: string, value: unknown }[] = [];
+  protected _defaultAnnouncerTranslations?: { [P in keyof ANNOUNCER_TYPE]-?: ANNOUNCER_TYPE[P] };
 
   constructor(@Optional() @Inject(NGX_WIDGETS_VALIDATION_TRANSLATIONS) protected readonly validationTranslations: NgxWidgetsValidationErrorTypes | any = {},
               @Optional() @Inject(NGX_WIDGETS_FORM_FIELD_APPEARANCE) protected readonly formFieldAppearance: MatFormFieldAppearance) {
@@ -96,5 +104,19 @@ export class BaseInput<T> extends BaseValueAccessor<T> implements OnInit, AfterV
   override ngAfterViewInit() {
     super.ngAfterViewInit();
     this.cdr.detectChanges();
+  }
+
+  protected announce(key: keyof ANNOUNCER_TYPE | string) {
+    if (this._defaultAnnouncerTranslations?.[key as keyof ANNOUNCER_TYPE]) {
+      const _key = key as keyof ANNOUNCER_TYPE
+      const inputTranslation = this.announcerTranslations()?.[_key] as string;
+      if (inputTranslation) {
+        return this.liveAnnouncer.announce(inputTranslation, 'assertive');
+      } else {
+        return this.liveAnnouncer.announce(this._defaultAnnouncerTranslations![_key] as string, 'assertive');
+      }
+    } else {
+      return this.liveAnnouncer.announce(key as string, 'assertive');
+    }
   }
 }
