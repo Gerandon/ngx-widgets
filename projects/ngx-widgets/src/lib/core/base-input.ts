@@ -16,7 +16,7 @@ import {BaseValueAccessor} from './base-value-accessor';
 import {isEmpty, keys} from 'lodash-es';
 import {LiveAnnouncer} from "@angular/cdk/a11y";
 import {ThemePalette} from "@angular/material/core";
-import {startWith, takeUntil} from "rxjs";
+import {debounceTime, startWith, takeUntil} from "rxjs";
 
 export interface NgxWidgetsValidationErrorTypes {
   required?: string;
@@ -118,9 +118,11 @@ export class BaseInput<T, ANNOUNCER_TYPE = object> extends BaseValueAccessor<T> 
     this.control.statusChanges.pipe(
       startWith(this.control.status),
       takeUntil(this.destroy$),
+      debounceTime(100),
     ).subscribe(() => {
       if (!this.control.hasError('server')) {
         this.controlErrorKeys = keys(this.control.errors).map((key) => key);
+        this.cdr.detectChanges();
       }
     });
   }

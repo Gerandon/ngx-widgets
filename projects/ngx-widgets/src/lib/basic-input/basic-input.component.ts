@@ -10,7 +10,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import {NgIf} from "@angular/common";
 import {NgxMaskDirective} from "ngx-mask";
 import {BaseMaskInput} from "../core/base-mask-input";
 
@@ -25,7 +24,6 @@ import {BaseMaskInput} from "../core/base-mask-input";
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
     NgxMaskDirective,
   ],
   providers: [
