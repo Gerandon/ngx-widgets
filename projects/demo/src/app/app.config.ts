@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {provideEnvironmentNgxMask} from "ngx-mask";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
+import {NGX_WIDGETS_VALIDATION_TRANSLATIONS} from "@gerandon/ngx-widgets";
 
 export const appConfig: ApplicationConfig = {
   providers: [
