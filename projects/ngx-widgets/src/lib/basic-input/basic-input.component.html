@@ -1,5 +1,9 @@
 <div class="basic-input cva-input">
-  <mat-form-field [appearance]="_appearance()" [subscriptSizing]="subscriptSizing()" [hintLabel]="hintLabel()" [floatLabel]="floatLabel()">
+  <mat-form-field [appearance]="appearance() ?? _appearance()"
+                  [color]="color() ?? _color()"
+                  [subscriptSizing]="subscriptSizing()"
+                  [hintLabel]="hintLabel()"
+                  [floatLabel]="floatLabel()">
     @if (label) {
       <mat-label [class.disabled]="isDisabled()">{{label}}</mat-label>
     }
@@ -66,24 +70,13 @@
 
     @if (control.errors?.['server']) {
       <mat-error>{{ control.errors?.['server'] }}</mat-error>
-    } @else if (control.errors?.['required'] && validationTranslations.required) {
-      <mat-error>{{ validationTranslations.required }}</mat-error>
-    } @else {
-
     }
-    @for (error of validatorMessagesArray; track error.key) {
-      <!--
-        this @if makes the mat-error to be placed out of subscript-wrapper
-        that way the error message will be inside the input, not under the field as the others....
-
-        @if (control.errors?.[error.key]) {
-        }
-      -->
-      <mat-error *ngIf="control.errors?.[error.key]">
-        @if(!!validatorMessages()?.[error.key]) {
-          {{ error.value }}
-        } @else if (!!validationTranslations?.[error.key]) {
-          {{ validationTranslations[error.key] }}
+    @for (errorKey of controlErrorKeys; track errorKey) {
+      <mat-error>
+        @if(validatorMessages()?.[errorKey]) {
+          {{ validatorMessages()![errorKey] }}
+        } @else if (!!validationTranslations?.[errorKey]) {
+          {{ validationTranslations[errorKey] }}
         }
       </mat-error>
     }

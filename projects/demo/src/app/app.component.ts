@@ -36,7 +36,11 @@ export class AppComponent {
   };
 
   public readonly formGroup = inject(FormBuilder).group({
-    textInput: ['', [Validators.required, (ctrl: AbstractControl) => (ctrl.value.length < 3 ? { invalidValidationTest: true } : null)]],
+    textInput: ['', [
+      Validators.required,
+      (ctrl: AbstractControl) => (ctrl.value.length < 3 ? { invalidValidationTest: true } : null),
+      (ctrl: AbstractControl) => (ctrl.value === 'global' ? { globalValidationMessage: true } : null)
+    ]],
     maskedTextInput: '12312312312',
     maskedTextInput2: '12312312312',
     numberInput: '',
