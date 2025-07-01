@@ -1,6 +1,15 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {AsyncPipe, JsonPipe} from '@angular/common';
-import {Component, forwardRef, Input, ViewEncapsulation, input, viewChild, ElementRef, OnInit} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
+import {
+  Component,
+  forwardRef,
+  Input,
+  ViewEncapsulation,
+  input,
+  viewChild,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import {NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
@@ -12,6 +21,14 @@ import {MatError, MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {find, isEqual} from "lodash-es";
 
+interface ChipsAnnouncerTranslations {
+  asyncFilterStart?: string;
+  asyncFilterEnd?: string;
+  itemRemoved?: string;
+  itemAdded?: string;
+  selectableItems?: string;
+}
+
 @Component({
   selector: 'gerandon-basic-chips',
   templateUrl: 'basic-chips.component.html',
@@ -19,19 +36,19 @@ import {find, isEqual} from "lodash-es";
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => BasicChipsComponent), multi: true}],
-  imports: [
-    MatChipsModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    AsyncPipe,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatError,
-  ],
+    imports: [
+        MatChipsModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        AsyncPipe,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatError,
+    ],
 })
-export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
+export class BasicChipsComponent<T> extends BaseInput<T[], ChipsAnnouncerTranslations> implements OnInit {
 
   public readonly tsFilterInput = viewChild<ElementRef>('inputElement');
   public readonly asyncFilterFn = input<(value: string) => Observable<T[]>>();
@@ -50,6 +67,13 @@ export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
   public filterOptions$?: Observable<T[]>;
   protected _hintLabel!: string;
   private readonly inputChange = new Subject<string>();
+  protected override _defaultAnnouncerTranslations: { [P in keyof ChipsAnnouncerTranslations]-?: ChipsAnnouncerTranslations[P] } = {
+    asyncFilterStart: 'Szerver keresés elindítva',
+    asyncFilterEnd: 'A szerver keresés lefutott',
+    selectableItems: 'Választható elemek:',
+    itemRemoved: 'Elem sikeresen eltávolítva',
+    itemAdded: 'Elem hozzáadva'
+  }
 
   override ngOnInit() {
     super.ngOnInit();
@@ -57,10 +81,12 @@ export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
     if (this.asyncFilterFn()) {
       this.filterOptions$ = this.inputChange.pipe(
         debounceTime(300),
+        tap(() => this.announce('asyncFilterStart')),
         switchMap((value) => {
           if (value && value.length >= this.startAsyncFnAt()) {
             return this.asyncFilterFn()!(value).pipe(
               map((responseList) => {
+                this.announce('asyncFilterEnd');
                 return responseList.filter((responseListItem) => {
                   return !find(this.control.value, (controlAct) => isEqual(controlAct, responseListItem));
                 })
@@ -70,8 +96,11 @@ export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
           return of([]);
         }),
         tap((responseList) => {
+          this.announce('selectableItems').then(() => {
+            this.announce(responseList.map((act) => this.labelProperty ? act[this.labelProperty] : act).join(','))
+          });
           if (!this.tsFilterInput()?.nativeElement.value && !this.control.value) {
-            this._hintLabel = 'Kezdjen el gépelni...';
+            this._hintLabel = this.hintLabel() ?? 'Kezdjen el gépelni...';
           } else {
             this._hintLabel = !responseList.length ? this.emptyListLabel() : '';
           }
@@ -96,6 +125,7 @@ export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
     }
 
     this.mark();
+    this.announce('itemRemoved');
   }
 
   add(event: MatChipInputEvent): void {
@@ -106,6 +136,7 @@ export class BasicChipsComponent<T> extends BaseInput<T[]> implements OnInit {
     event.chipInput!.clear();
 
     this.mark();
+    this.announce('itemAdded');
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {

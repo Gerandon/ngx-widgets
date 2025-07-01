@@ -1,4 +1,8 @@
-<mat-form-field [appearance]="_appearance()" [subscriptSizing]="subscriptSizing()" [hintLabel]="_hintLabel"  [floatLabel]="floatLabel()">
+<mat-form-field [appearance]="appearance() ?? _appearance()"
+                [color]="color() ?? _color()"
+                [subscriptSizing]="subscriptSizing()"
+                [hintLabel]="_hintLabel"
+                [floatLabel]="floatLabel()">
   @if (label) {
     <mat-label [class.disabled]="isDisabled()">{{ label }}</mat-label>
   }
@@ -16,13 +20,17 @@
            [placeholder]="placeholder || label"
            [matAutocomplete]="auto"
            (input)="filter()"
+           [attr.aria-placeholder]="ariaPlaceholder() || placeholder"
+           [attr.aria-label]="ariaLabel() || label"
+           [attr.aria-describedby]="ariaDescribedBy()"
+           [attr.aria-description]="ariaDescription()"
            [matChipInputFor]="chipGrid"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            (matChipInputTokenEnd)="!labelProperty && add($event)"/>
     <mat-autocomplete #auto="matAutocomplete"
                       (optionSelected)="selected($event)">
       @for (filterItem of filterOptions$ | async; track filterItem) {
-        <mat-option [value]="filterItem">
+        <mat-option [value]="filterItem" [attr.aria-label]="labelProperty ? filterItem[labelProperty] : filterItem">
           {{labelProperty ? filterItem[labelProperty] : filterItem}}
         </mat-option>
       }
@@ -31,11 +39,14 @@
   <input #input="ngForm" [style.display]="'none'" [formControl]="control" />
   @if (control.errors?.['server']) {
     <mat-error>{{ control.errors?.['server'] }}</mat-error>
-  } @else if (control.errors?.['required'] && validationTranslations.required) {
-    <mat-error>{{ validationTranslations.required }}</mat-error>
-  } @else {
-    @for (error of validatorMessagesArray; track error) {
-      <mat-error>{{ error.value }}</mat-error>
-    }
+  }
+  @for (errorKey of controlErrorKeys; track errorKey) {
+    <mat-error>
+      @if(validatorMessages()?.[errorKey]) {
+        {{ validatorMessages()![errorKey] }}
+      } @else if (!!validationTranslations?.[errorKey]) {
+        {{ validationTranslations[errorKey] }}
+      }
+    </mat-error>
   }
 </mat-form-field>

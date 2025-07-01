@@ -24,6 +24,10 @@ export interface SelectOptionType {
   value: string | number | null | unknown;
 }
 
+interface SelectAnnouncerTranslations {
+  inputReset?: string;
+}
+
 @Component({
   selector: 'gerandon-select',
   templateUrl: './select.component.html',
@@ -40,7 +44,7 @@ export interface SelectOptionType {
     MatTooltipModule,
   ],
 })
-export class SelectComponent extends BaseInput<unknown> implements OnInit {
+export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslations> implements OnInit {
 
   /**
    * In this case, an empty option appears that resets the control, to an empty value state
@@ -49,12 +53,16 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
   //  This input is used in a control flow expression (e.g. `@if` or `*ngIf`)
   //  and migrating would break narrowing currently.
   @Input() public emptyOptionLabel?: string;
+  @Input() public emptyOptionAriaLabel?: string = 'Üres';
   public readonly multiple = input<boolean>();
   // TODO: Skipped for migration because:
   //  Your application code writes to the input. This prevents migration.
   @Input() public options!: SelectOptionType[];
   public readonly asyncOptions = input<Observable<SelectOptionType[]>>();
   @ViewChildren('optionElements') public optionElements!: QueryList<ElementRef>;
+  protected override _defaultAnnouncerTranslations: { [P in keyof SelectAnnouncerTranslations]-?: SelectAnnouncerTranslations[P] } = {
+    inputReset: 'Lenyíló mező törölve!'
+  }
 
   /**
    * Angular Material - Select component comparsion is only '===', does not work with Array values
@@ -73,5 +81,10 @@ export class SelectComponent extends BaseInput<unknown> implements OnInit {
         this.cdr.detectChanges();
       });
     }
+  }
+
+  reset() {
+    this.control.reset();
+    this.announce('inputReset');
   }
 }

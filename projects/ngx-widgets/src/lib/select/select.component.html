@@ -1,4 +1,7 @@
-<mat-form-field [appearance]="_appearance()" [subscriptSizing]="subscriptSizing()" [floatLabel]="floatLabel()">
+<mat-form-field [appearance]="appearance() ?? _appearance()"
+                [color]="color() ?? _color()"
+                [subscriptSizing]="subscriptSizing()"
+                [floatLabel]="floatLabel()">
   @if (label) {
     <mat-label>{{ label }}</mat-label>
   }
@@ -9,10 +12,14 @@
               [formControl]="control"
               [id]="id"
               [class.input-disabled]="isDisabled() || control.disabled"
+              [attr.aria-placeholder]="ariaPlaceholder() || placeholder"
+              [attr.aria-label]="ariaLabel() || label"
+              [attr.aria-describedby]="ariaDescribedBy()"
+              [attr.aria-description]="ariaDescription()"
               [compareWith]="_isEqual"
               [attr.disabled]="isDisabled() || control.disabled ? '' : null">
     @if (emptyOptionLabel) {
-      <mat-option (click)="control.reset()">
+      <mat-option (click)="reset()" [attr.aria-label]="emptyOptionAriaLabel">
         {{ emptyOptionLabel }}
       </mat-option>
     }
@@ -27,11 +34,14 @@
   }
   @if (control.errors?.['server']) {
     <mat-error>{{ control.errors?.['server'] }}</mat-error>
-  } @else if (control.errors?.['required'] && validationTranslations.required) {
-    <mat-error>{{ validationTranslations.required }}</mat-error>
-  } @else {
-    @for (error of validatorMessagesArray; track error) {
-      <mat-error>{{ error.value }}</mat-error>
-    }
+  }
+  @for (errorKey of controlErrorKeys; track errorKey) {
+    <mat-error>
+      @if(validatorMessages()?.[errorKey]) {
+        {{ validatorMessages()![errorKey] }}
+      } @else if (!!validationTranslations?.[errorKey]) {
+        {{ validationTranslations[errorKey] }}
+      }
+    </mat-error>
   }
 </mat-form-field>
