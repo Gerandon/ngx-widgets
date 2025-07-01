@@ -3,7 +3,7 @@ import {
   Directive, Inject, inject, InjectionToken,
   Input, OnChanges,
   OnInit, Optional, SimpleChanges,
-  input, signal, WritableSignal
+  input, signal, WritableSignal, effect, viewChild
 } from '@angular/core';
 import {
   FloatLabelType,
@@ -17,6 +17,7 @@ import {isEmpty, keys} from 'lodash-es';
 import {LiveAnnouncer} from "@angular/cdk/a11y";
 import {ThemePalette} from "@angular/material/core";
 import {debounceTime, startWith, takeUntil} from "rxjs";
+import {MatInput} from "@angular/material/input";
 
 export interface NgxWidgetsValidationErrorTypes {
   required?: string;
@@ -74,6 +75,8 @@ export class BaseInput<T, ANNOUNCER_TYPE = object> extends BaseValueAccessor<T> 
   public readonly ariaPlaceholder = input('', { alias: 'aria-placeholder' });
   public readonly ariaDescribedBy = input('', { alias: 'aria-describedby' });
   public readonly ariaDescription = input('', { alias: 'aria-description' });
+  public readonly focusOnInit = input(false);
+  protected readonly matInput = viewChild(MatInput);
   protected controlErrorKeys: string[] = [];
   private readonly liveAnnouncer = inject(LiveAnnouncer);
   private readonly matFormFieldConfig = inject(MAT_FORM_FIELD_DEFAULT_OPTIONS);
@@ -114,7 +117,6 @@ export class BaseInput<T, ANNOUNCER_TYPE = object> extends BaseValueAccessor<T> 
 
   override ngAfterViewInit() {
     super.ngAfterViewInit();
-    this.cdr.detectChanges();
     this.control.statusChanges.pipe(
       startWith(this.control.status),
       takeUntil(this.destroy$),
@@ -125,6 +127,10 @@ export class BaseInput<T, ANNOUNCER_TYPE = object> extends BaseValueAccessor<T> 
         this.cdr.detectChanges();
       }
     });
+    if (this.focusOnInit()) {
+      this.matInput()?.focus();
+    }
+    this.cdr.detectChanges();
   }
 
   protected announce(key: keyof ANNOUNCER_TYPE | string) {
