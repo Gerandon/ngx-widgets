@@ -6,18 +6,18 @@ import {
   OnInit,
   QueryList,
   ViewChildren,
-  ViewEncapsulation,
-  input
+  input, signal
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import {MatSelectModule} from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {BaseInput} from '../core/base-input';
 import { isEqual } from 'lodash-es';
-import { Observable } from 'rxjs';
+import {first, Observable, Subscription} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 export interface SelectOptionType {
   label: string;
@@ -32,7 +32,6 @@ interface SelectAnnouncerTranslations {
   selector: 'gerandon-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   standalone: true,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => SelectComponent), multi: true }
@@ -42,6 +41,7 @@ interface SelectAnnouncerTranslations {
     MatSelectModule,
     ReactiveFormsModule,
     MatTooltipModule,
+    MatProgressSpinner,
   ],
 })
 export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslations> implements OnInit {
@@ -55,13 +55,25 @@ export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslati
   @Input() public emptyOptionLabel?: string;
   @Input() public emptyOptionAriaLabel?: string = 'Üres';
   public readonly multiple = input<boolean>();
-  // TODO: Skipped for migration because:
-  //  Your application code writes to the input. This prevents migration.
-  @Input() public options!: SelectOptionType[];
+  public readonly options = input<SelectOptionType[]>([]);
+  public readonly initialOptionGetFn = input<(controlValue: any) => Observable<SelectOptionType>>();
   public readonly asyncOptions = input<Observable<SelectOptionType[]>>();
+  public readonly lazy = input<boolean>(false);
+  public readonly optionsLoading = signal(false);
   @ViewChildren('optionElements') public optionElements!: QueryList<ElementRef>;
   protected override _defaultAnnouncerTranslations: { [P in keyof SelectAnnouncerTranslations]-?: SelectAnnouncerTranslations[P] } = {
     inputReset: 'Lenyíló mező törölve!'
+  }
+  private lastOptions: SelectOptionType[] = [];
+  private __options: SelectOptionType[] = [];
+  get _options() {
+    return this.__options;
+  }
+  set _options(value: SelectOptionType[]) {
+    this.__options = value;
+    if (value.length) {
+      this.lastOptions = value;
+    }
   }
 
   /**
@@ -70,16 +82,57 @@ export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslati
    */
   public readonly _isEqual = isEqual;
 
+  private optionSubscription?: Subscription;
+
   override ngOnInit() {
     this.placeholder = !this.placeholder ? (this.validationTranslations?.selectGlobalPlaceholder || this.label) : this.placeholder;
     super.ngOnInit();
     this.id = this.id || this.formControlName() || this.name;
+    this._options = this.options();
+
     const asyncOptions = this.asyncOptions();
-    if (asyncOptions) {
+    if (asyncOptions && !this.lazy()) {
       asyncOptions.pipe(takeUntil(this.destroy$)).subscribe((resp) => {
-        this.options = resp;
+        this._options = resp;
         this.cdr.detectChanges();
       });
+    }
+  }
+
+  override ngAfterViewInit() {
+    super.ngAfterViewInit();
+    if (this.lazy()) {
+      this.initialOptionGetFn()!(this.control.value).pipe(
+        first()
+      ).subscribe((response) => {
+        this._options = [response];
+        this.cdr.detectChanges();
+      })
+    }
+  }
+
+  opened(opened: boolean) {
+    if (opened) {
+      const asyncOptions = this.asyncOptions();
+      if (asyncOptions && this.lazy()) {
+        this.optionsLoading.set(true);
+        this.optionSubscription = asyncOptions.pipe(first()).subscribe((resp) => {
+          this._options = resp;
+          this.optionsLoading.set(false);
+          this.cdr.detectChanges();
+        });
+      }
+    } else if(this.optionSubscription && !this.optionSubscription.closed) {
+      // Cancelling request if select is closed before response arrived
+      this.optionsLoading.set(false);
+      this.optionSubscription?.unsubscribe();
+      if (this.lazy()) {
+        const lastOption = this.lastOptions.find((act) => act.value === this.control.value);
+        if (lastOption) {
+          this._options = [lastOption];
+          this.cdr.detectChanges();
+        }
+      }
     }
   }
 

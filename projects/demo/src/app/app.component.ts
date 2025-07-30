@@ -1,7 +1,13 @@
 import {Component, inject} from '@angular/core';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {map, Observable, of} from "rxjs";
+import {catchError, delay, map, Observable, of, switchMap, tap} from "rxjs";
 import {BasicChipsComponent, BasicInputComponent, SelectComponent, TextareaInputComponent} from "@gerandon/ngx-widgets";
+import {HttpClient} from "@angular/common/http";
+
+const asyncOptions =[
+  {label: 'Async Option 1', value: 'option_one'},
+  {label: 'Async Option 2', value: 'option_two'},
+]
 
 @Component({
   selector: 'app-root',
@@ -19,17 +25,21 @@ import {BasicChipsComponent, BasicInputComponent, SelectComponent, TextareaInput
 export class AppComponent {
 
   public readonly syncOptions = [
-    { label: 'Option 1', value: 'option_one' },
-    { label: 'Option 2', value: 'option_two' },
+    {label: 'Option 1', value: 'option_one'},
+    {label: 'Option 2', value: 'option_two'},
   ];
 
-  public readonly asyncOptions: Observable<any> = of([
-    { label: 'Async Option 1', value: 'option_one' },
-    { label: 'Async Option 2', value: 'option_two' },
-  ]);
+  public readonly initialOptionGetFn = (param: string) => this.getRickAndMorty().pipe(
+    map(() => (asyncOptions.find((act) => act.value === param)!))
+  )
+  public readonly asyncOptions: Observable<any> = this.getRickAndMorty().pipe(
+    map(() => asyncOptions),
+    tap({
+      next: () => console.log('async options arrived'),
+      complete: () => console.log('async options request closed')
+    }));
 
   public readonly asyncFilterFn = (searchValue: string) => {
-    console.log(searchValue);
     return this.asyncOptions.pipe(
       map((list) => list.filter((act: any) => act.label.startsWith(searchValue)))
     );
@@ -38,8 +48,8 @@ export class AppComponent {
   public readonly formGroup = inject(FormBuilder).group({
     textInput: ['', [
       Validators.required,
-      (ctrl: AbstractControl) => (ctrl.value.length < 3 ? { invalidValidationTest: true } : null),
-      (ctrl: AbstractControl) => (ctrl.value === 'global' ? { globalValidationMessage: true } : null)
+      (ctrl: AbstractControl) => (ctrl.value.length < 3 ? {invalidValidationTest: true} : null),
+      (ctrl: AbstractControl) => (ctrl.value === 'global' ? {globalValidationMessage: true} : null)
     ]],
     maskedTextInput: '12312312312',
     maskedTextInput2: '12312312312',
@@ -52,7 +62,21 @@ export class AppComponent {
     autocompleteChips: null,
   });
 
-  constructor() {
+  constructor(private readonly httpClient: HttpClient) {
     this.formGroup.valueChanges.subscribe(console.log);
+  }
+
+  getRickAndMorty(...args: any[]) {
+    const value = typeof args[0] === 'string' ? args[0] : 'rick';
+    return this.httpClient.get<{
+      results: any[]
+    }>(`https://rickandmortyapi.com/api/character/?name=${value}&status=alive`).pipe(
+      map((result: { results: any[] }) => {
+        return {
+          content: result.results,
+        };
+      }),
+      catchError(() => of({content: []})),
+    );
   }
 }

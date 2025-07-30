@@ -8,6 +8,7 @@
   <mat-select #inputElement
               #input="ngForm"
               [multiple]="multiple()"
+              (openedChange)="opened($event)"
               [placeholder]="!floatLabel() ? label : placeholder"
               [formControl]="control"
               [id]="id"
@@ -18,13 +19,21 @@
               [attr.aria-description]="ariaDescription()"
               [compareWith]="_isEqual"
               [attr.disabled]="isDisabled() || control.disabled ? '' : null">
-    @if (emptyOptionLabel) {
-      <mat-option (click)="reset()" [attr.aria-label]="emptyOptionAriaLabel">
-        {{ emptyOptionLabel }}
+    @if (lazy() && optionsLoading()) {
+      <mat-option class="gerandon-select-spinner-option" disabled>
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
       </mat-option>
+    } @else {
+      @if (emptyOptionLabel) {
+        <mat-option (click)="reset()" [attr.aria-label]="emptyOptionAriaLabel">
+          {{ emptyOptionLabel }}
+        </mat-option>
+      }
     }
-    @for(option of options; track option) {
-      <mat-option [value]="option.value">
+    @for(option of _options; track option) {
+      <mat-option [value]="option.value"
+                  [disabled]="optionsLoading()"
+                  [attr.aria-label]="option.label">
         {{ option.label }}
       </mat-option>
     }
