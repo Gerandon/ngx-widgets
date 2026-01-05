@@ -25,7 +25,7 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gerandon/ngx-widgets"
+    "url": "git+https://github.com/Gerandon/ngx-widgets"
   },
   "peerDependencies": {
     "@angular/common": "^21.0.0",
