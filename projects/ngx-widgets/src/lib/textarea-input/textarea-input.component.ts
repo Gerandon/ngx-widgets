@@ -41,7 +41,7 @@ export class TextareaInputComponent extends BaseTextInput<string> implements Aft
     this.control.valueChanges.pipe(
       takeUntil(this.destroy$)
     ).subscribe((value) => {
-      if (value.length !== 0 && value.length >= (this.maxLength() ?? 0)) {
+      if (value && value.length !== 0 && value.length >= (this.maxLength() ?? 0)) {
         this.announce('maxLengthReached');
       }
     })

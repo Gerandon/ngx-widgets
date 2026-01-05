@@ -1,7 +1,17 @@
-gerandon-select {
+:host {
   mat-form-field {
     width: 100%;
     .mat-mdc-text-field-wrapper {
+    }
+  }
+}
+::ng-deep {
+  .gerandon-select-spinner-option .mdc-list-item__primary-text {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    mat-progress-spinner {
+      height: 50px !important;
     }
   }
 }

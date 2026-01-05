@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {provideEnvironmentNgxMask} from "ngx-mask";
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from "@angular/material/form-field";
 import {NGX_WIDGETS_VALIDATION_TRANSLATIONS} from "@gerandon/ngx-widgets";
+import {provideHttpClient, withFetch} from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideEnvironmentNgxMask(),
     provideAnimationsAsync(),
+    provideHttpClient(withFetch()),
     {
       provide: NGX_WIDGETS_VALIDATION_TRANSLATIONS,
       useValue: {

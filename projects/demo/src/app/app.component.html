@@ -67,6 +67,8 @@
                            formControlName="asyncSelect"
                            label="ASync Options"
                            emptyOptionLabel="-"
+                           [lazy]="true"
+                           [initialOptionGetFn]="initialOptionGetFn"
                            [asyncOptions]="asyncOptions">
           </gerandon-select>
         </div>
