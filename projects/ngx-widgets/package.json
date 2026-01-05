@@ -1,6 +1,6 @@
 {
   "name": "@gerandon/ngx-widgets",
-  "version": "21.0.0-SNAPSHOT",
+  "version": "22.0.0-SNAPSHOT",
   "description": "Angular widget (components) collection using CVA (ControlValueAccessor)",
   "keywords": [
     "CVA",
@@ -28,9 +28,9 @@
     "url": "https://github.com/Gerandon/ngx-widgets"
   },
   "peerDependencies": {
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@angular/material": "^20.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/material": "^21.0.0",
     "lodash-es": "^4.17.21"
   },
   "dependencies": {
