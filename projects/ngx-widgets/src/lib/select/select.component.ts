@@ -26,6 +26,7 @@ export interface SelectOptionType {
 
 interface SelectAnnouncerTranslations {
   inputReset?: string;
+  asyncLoading?: string;
 }
 
 @Component({
@@ -62,7 +63,8 @@ export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslati
   public readonly optionsLoading = signal(false);
   @ViewChildren('optionElements') public optionElements!: QueryList<ElementRef>;
   protected override _defaultAnnouncerTranslations: { [P in keyof SelectAnnouncerTranslations]-?: SelectAnnouncerTranslations[P] } = {
-    inputReset: 'Lenyíló mező törölve!'
+    inputReset: 'Lenyíló mező törölve!',
+    asyncLoading: 'Értékkészlet betöltése a szerverről folyamatban!'
   }
   private lastOptions: SelectOptionType[] = [];
   private __options: SelectOptionType[] = [];
@@ -92,6 +94,7 @@ export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslati
 
     const asyncOptions = this.asyncOptions();
     if (asyncOptions && !this.lazy()) {
+      this.announce('asyncLoading');
       asyncOptions.pipe(takeUntil(this.destroy$)).subscribe((resp) => {
         this._options = resp;
         this.cdr.detectChanges();
@@ -115,6 +118,7 @@ export class SelectComponent extends BaseInput<unknown, SelectAnnouncerTranslati
     if (opened) {
       const asyncOptions = this.asyncOptions();
       if (asyncOptions && this.lazy()) {
+        this.announce('asyncLoading');
         this.optionsLoading.set(true);
         this.optionSubscription = asyncOptions.pipe(first()).subscribe((resp) => {
           this._options = resp;
